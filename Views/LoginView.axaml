@@ -1,0 +1,22 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:PosSale.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="400"
+             x:Class="PosSale.Views.LoginView"
+             x:DataType="vm:LoginViewModel">
+    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Width="300" Spacing="20">
+        <TextBlock Text="POS System Login" FontSize="24" HorizontalAlignment="Center" Margin="0,0,0,20"/>
+        
+        <TextBox Watermark="Email" Text="{Binding Email}"/>
+        <TextBox Watermark="Password" Text="{Binding Password}" PasswordChar="*"/>
+        
+        <Button Content="Login" Command="{Binding LoginCommand}" HorizontalAlignment="Stretch"/>
+        
+        <ProgressBar IsIndeterminate="True" IsVisible="{Binding IsLoading}" Height="5"/>
+        
+        <TextBlock Text="{Binding ErrorMessage}" Foreground="Red" TextWrapping="Wrap" 
+                   IsVisible="{Binding HasError}"/>
+    </StackPanel>
+</UserControl>
