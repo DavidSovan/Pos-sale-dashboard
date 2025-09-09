@@ -1,4 +1,4 @@
-﻿namespace PosSale.ViewModels;
+namespace PosSale.ViewModels;
 
 public partial class MainWindowViewModel : ViewModelBase
 {

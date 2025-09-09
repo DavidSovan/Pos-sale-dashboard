@@ -1,69 +1,88 @@
+
 using System;
-using System.Net.Http;
-using System.Net.Http.Json;
 using System.Threading.Tasks;
-using Avalonia;
-using Avalonia.Controls;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using PosSale.Models;
+using System.Reactive;
+using System.Reactive.Linq;
+using System.Windows.Input;
+using ReactiveUI;
 using PosSale.Services;
+using PosSale.Models;
 
 namespace PosSale.ViewModels;
-
-public partial class LoginViewModel : ViewModelBase
+public class LoginViewModel : ViewModelBase
 {
-    [ObservableProperty] 
-    private string _email = string.Empty;
-    
-    [ObservableProperty]
-    private string _password = string.Empty;
-    
-    [ObservableProperty]
-    private bool _isLoading;
-    
-    [ObservableProperty]
+    private string _email = "david@gmail.com";
+    private string _password = "David@123";
     private string _errorMessage = string.Empty;
+    private bool _isLoading;
+    private readonly IAuthService _authService;
     
-    [ObservableProperty]
-    private bool _hasError;
-    
-    private readonly HttpClient _httpClient;
-    private readonly INavigationService _navigationService;
-    private readonly AuthService _authService;
-    
-    public LoginViewModel(HttpClient httpClient, INavigationService navigationService)
+    public string Email
     {
-        _httpClient = httpClient;
-        _navigationService = navigationService;
-        _authService = new AuthService(httpClient);
+        get => _email;
+        set => this.RaiseAndSetIfChanged(ref _email, value);
     }
     
-    [RelayCommand]
-    private async Task Login()
+    public string Password
+    {
+        get => _password;
+        set => this.RaiseAndSetIfChanged(ref _password, value);
+    }
+    
+    public string ErrorMessage
+    {
+        get => _errorMessage;
+        set => this.RaiseAndSetIfChanged(ref _errorMessage, value);
+    }
+    
+    public bool IsLoading
+    {
+        get => _isLoading;
+        set => this.RaiseAndSetIfChanged(ref _isLoading, value);
+    }
+    
+    public ReactiveCommand<Unit, Unit> LoginCommand { get; }
+    public Interaction<LoginResponse, Unit> LoginSuccessful { get; } = new Interaction<LoginResponse, Unit>();
+    
+    public LoginViewModel(IAuthService authService)
+    {
+        _authService = authService;
+        
+        var canLogin = this.WhenAnyValue(
+            x => x.Email,
+            x => x.Password,
+            x => x.IsLoading,
+            (email, password, isLoading) => 
+                !isLoading && 
+                !string.IsNullOrWhiteSpace(email) && 
+                !string.IsNullOrWhiteSpace(password));
+        
+        LoginCommand = ReactiveCommand.CreateFromTask(
+            ExecuteLogin,
+            canLogin);
+    }
+    
+    private async Task ExecuteLogin()
     {
         try
         {
             IsLoading = true;
-            HasError = false;
+            ErrorMessage = string.Empty;
             
-            var result = await _authService.LoginAsync(Email, Password);
+            var response = await _authService.LoginAsync(Email, Password);
             
-            if (result?.Data?.AccessToken != null && result.Data.User != null)
+            if (response.Status == "success")
             {
-                _authService.StoreToken(result.Data.AccessToken);
-                _navigationService.NavigateToHome(result.Data.User);
+                await LoginSuccessful.Handle(response);
             }
             else
             {
-                ErrorMessage = "Invalid email or password";
-                HasError = true;
+                ErrorMessage = "Login failed. Please check your credentials.";
             }
         }
         catch (Exception ex)
         {
-            ErrorMessage = "An error occurred: " + ex.Message;
-            HasError = true;
+            ErrorMessage = $"Login error: {ex.Message}";
         }
         finally
         {

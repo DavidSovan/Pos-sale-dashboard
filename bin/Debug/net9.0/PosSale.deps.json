@@ -12,8 +12,10 @@
           "Avalonia.Desktop": "11.3.3",
           "Avalonia.Diagnostics": "11.3.3",
           "Avalonia.Fonts.Inter": "11.3.3",
+          "Avalonia.ReactiveUI": "11.3.3",
           "Avalonia.Themes.Fluent": "11.3.3",
           "CommunityToolkit.Mvvm": "8.2.1",
+          "LoadingIndicators.Avalonia": "11.0.11.1",
           "Microsoft.Extensions.DependencyInjection": "8.0.0",
           "System.Net.Http.Json": "8.0.0"
         },
@@ -175,6 +177,19 @@
           }
         }
       },
+      "Avalonia.ReactiveUI/11.3.3": {
+        "dependencies": {
+          "Avalonia": "11.3.3",
+          "ReactiveUI": "20.1.1",
+          "System.Reactive": "6.0.1"
+        },
+        "runtime": {
+          "lib/net8.0/Avalonia.ReactiveUI.dll": {
+            "assemblyVersion": "11.3.3.0",
+            "fileVersion": "11.3.3.0"
+          }
+        }
+      },
       "Avalonia.Remote.Protocol/11.3.3": {
         "runtime": {
           "lib/net8.0/Avalonia.Remote.Protocol.dll": {
@@ -256,6 +271,17 @@
           "lib/net6.0/CommunityToolkit.Mvvm.dll": {
             "assemblyVersion": "8.2.0.0",
             "fileVersion": "8.2.1.1"
+          }
+        }
+      },
+      "DynamicData/8.4.1": {
+        "dependencies": {
+          "System.Reactive": "6.0.1"
+        },
+        "runtime": {
+          "lib/net8.0/DynamicData.dll": {
+            "assemblyVersion": "8.4.0.0",
+            "fileVersion": "8.4.1.20756"
           }
         }
       },
@@ -359,6 +385,17 @@
           }
         }
       },
+      "LoadingIndicators.Avalonia/11.0.11.1": {
+        "dependencies": {
+          "Avalonia": "11.3.3"
+        },
+        "runtime": {
+          "lib/net8.0/LoadingIndicators.Avalonia.dll": {
+            "assemblyVersion": "11.0.11.1",
+            "fileVersion": "11.0.11.1"
+          }
+        }
+      },
       "MicroCom.Runtime/0.11.0": {
         "runtime": {
           "lib/net5.0/MicroCom.Runtime.dll": {
@@ -383,6 +420,19 @@
           "lib/net8.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll": {
             "assemblyVersion": "8.0.0.0",
             "fileVersion": "8.0.23.53103"
+          }
+        }
+      },
+      "ReactiveUI/20.1.1": {
+        "dependencies": {
+          "DynamicData": "8.4.1",
+          "Splat": "15.1.1",
+          "System.ComponentModel.Annotations": "5.0.0"
+        },
+        "runtime": {
+          "lib/net8.0/ReactiveUI.dll": {
+            "assemblyVersion": "20.1.0.0",
+            "fileVersion": "20.1.1.46356"
           }
         }
       },
@@ -454,10 +504,27 @@
           }
         }
       },
+      "Splat/15.1.1": {
+        "runtime": {
+          "lib/net8.0/Splat.dll": {
+            "assemblyVersion": "15.1.0.0",
+            "fileVersion": "15.1.1.17670"
+          }
+        }
+      },
+      "System.ComponentModel.Annotations/5.0.0": {},
       "System.IO.Pipelines/8.0.0": {},
       "System.Net.Http.Json/8.0.0": {
         "dependencies": {
           "System.Text.Json": "8.0.0"
+        }
+      },
+      "System.Reactive/6.0.1": {
+        "runtime": {
+          "lib/net6.0/System.Reactive.dll": {
+            "assemblyVersion": "6.0.0.0",
+            "fileVersion": "6.0.1.7420"
+          }
         }
       },
       "System.Text.Encodings.Web/8.0.0": {},
@@ -548,6 +615,13 @@
       "path": "avalonia.native/11.3.3",
       "hashPath": "avalonia.native.11.3.3.nupkg.sha512"
     },
+    "Avalonia.ReactiveUI/11.3.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-8RfrmFTq4bqS+I2x84X1oYj+h4yE3MJ4lX4Ly2AIhayz8is6h3mNAMNuiav6VLJQ/+x4ukTiiWU76NHzjWs9dA==",
+      "path": "avalonia.reactiveui/11.3.3",
+      "hashPath": "avalonia.reactiveui.11.3.3.nupkg.sha512"
+    },
     "Avalonia.Remote.Protocol/11.3.3": {
       "type": "package",
       "serviceable": true,
@@ -597,6 +671,13 @@
       "path": "communitytoolkit.mvvm/8.2.1",
       "hashPath": "communitytoolkit.mvvm.8.2.1.nupkg.sha512"
     },
+    "DynamicData/8.4.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Mn1+fU/jqxgONEJq8KLQPGWEi7g/hUVTbjZyn4QM0sWWDAVOHPO9WjXWORSykwdfg/6S3GM15qsfz+2EvO+QAQ==",
+      "path": "dynamicdata/8.4.1",
+      "hashPath": "dynamicdata.8.4.1.nupkg.sha512"
+    },
     "HarfBuzzSharp/8.3.1.1": {
       "type": "package",
       "serviceable": true,
@@ -632,6 +713,13 @@
       "path": "harfbuzzsharp.nativeassets.win32/8.3.1.1",
       "hashPath": "harfbuzzsharp.nativeassets.win32.8.3.1.1.nupkg.sha512"
     },
+    "LoadingIndicators.Avalonia/11.0.11.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-A4hPrrOMRtgcGRqnc1sscaWudF99C+YKhRBaYnf1wVxfOVOwTVEM4I7qdUU4gyAL2oiBzXw/zuC4dD1XrdR9PA==",
+      "path": "loadingindicators.avalonia/11.0.11.1",
+      "hashPath": "loadingindicators.avalonia.11.0.11.1.nupkg.sha512"
+    },
     "MicroCom.Runtime/0.11.0": {
       "type": "package",
       "serviceable": true,
@@ -652,6 +740,13 @@
       "sha512": "sha512-cjWrLkJXK0rs4zofsK4bSdg+jhDLTaxrkXu4gS6Y7MAlCvRyNNgwY/lJi5RDlQOnSZweHqoyvgvbdvQsRIW+hg==",
       "path": "microsoft.extensions.dependencyinjection.abstractions/8.0.0",
       "hashPath": "microsoft.extensions.dependencyinjection.abstractions.8.0.0.nupkg.sha512"
+    },
+    "ReactiveUI/20.1.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-9hNPknWjijnaSWs6auypoXqUptPZcRpUypF+cf1zD50fgW+SEoQda502N3fVZ2eWPcaiUad+z6GaLwOWmUVHNw==",
+      "path": "reactiveui/20.1.1",
+      "hashPath": "reactiveui.20.1.1.nupkg.sha512"
     },
     "SkiaSharp/2.88.9": {
       "type": "package",
@@ -688,6 +783,20 @@
       "path": "skiasharp.nativeassets.win32/2.88.9",
       "hashPath": "skiasharp.nativeassets.win32.2.88.9.nupkg.sha512"
     },
+    "Splat/15.1.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-RHDTdF90FwVbRia2cmuIzkiVoETqnXSB2dDBBi/I35HWXqv4OKGqoMcfcd6obMvO2OmmY5PjU1M62K8LkJafAA==",
+      "path": "splat/15.1.1",
+      "hashPath": "splat.15.1.1.nupkg.sha512"
+    },
+    "System.ComponentModel.Annotations/5.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-dMkqfy2el8A8/I76n2Hi1oBFEbG1SfxD2l5nhwXV3XjlnOmwxJlQbYpJH4W51odnU9sARCSAgv7S3CyAFMkpYg==",
+      "path": "system.componentmodel.annotations/5.0.0",
+      "hashPath": "system.componentmodel.annotations.5.0.0.nupkg.sha512"
+    },
     "System.IO.Pipelines/8.0.0": {
       "type": "package",
       "serviceable": true,
@@ -701,6 +810,13 @@
       "sha512": "sha512-48Bxrd6zcGeQzS4GMEDVjuqCcAw/9wcEWnIu48FQJ5IzfKPiMR1nGtz9LrvGzU4+3TLbx/9FDlGmCUeLin1Eqg==",
       "path": "system.net.http.json/8.0.0",
       "hashPath": "system.net.http.json.8.0.0.nupkg.sha512"
+    },
+    "System.Reactive/6.0.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-rHaWtKDwCi9qJ3ObKo8LHPMuuwv33YbmQi7TcUK1C264V3MFnOr5Im7QgCTdLniztP3GJyeiSg5x8NqYJFqRmg==",
+      "path": "system.reactive/6.0.1",
+      "hashPath": "system.reactive.6.0.1.nupkg.sha512"
     },
     "System.Text.Encodings.Web/8.0.0": {
       "type": "package",

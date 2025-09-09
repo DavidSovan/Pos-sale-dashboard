@@ -1,87 +1,77 @@
+
 using System;
 using System.Net.Http;
-using System.Net.Http.Json;
 using System.Threading.Tasks;
+using System.Text;
+using System.Text.Json;
 using PosSale.Models;
 
 namespace PosSale.Services;
-
-public class AuthService
+public class AuthService : IAuthService
 {
     private readonly HttpClient _httpClient;
-    public string ErrorMessage { get; private set; }
-    public bool HasError { get; private set; }
+    private string _accessToken = string.Empty;
     
     public AuthService(HttpClient httpClient)
     {
         _httpClient = httpClient;
-        
-        if (_httpClient.BaseAddress == null)
-        {
-            Console.WriteLine("ERROR: HttpClient BaseAddress is null");
-            Console.WriteLine($"HttpClient configuration: {_httpClient}");
-        }
-        else
-        {
-            Console.WriteLine($"HttpClient configured with BaseAddress: {_httpClient.BaseAddress}");
-        }
     }
     
-    public async Task<AuthResponse?> LoginAsync(string email, string password)
+    public async Task<LoginResponse> LoginAsync(string email, string password)
     {
         try
         {
-            if (_httpClient.BaseAddress == null)
+            var loginRequest = new LoginRequest
             {
-                ErrorMessage = "API server configuration error - BaseAddress not set";
-                HasError = true;
-                return null;
-            }
+                Email = email,
+                Password = password
+            };
             
-            // Ensure leading slash so it combines correctly with BaseAddress
-            var requestUri = new Uri("/api/auth/login", UriKind.Relative);
-            Console.WriteLine($"Request URI: {_httpClient.BaseAddress}{requestUri}");
+            var json = JsonSerializer.Serialize(loginRequest);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
             
-            var response = await _httpClient.PostAsJsonAsync(requestUri, 
-                new { email, password });
-                
-            Console.WriteLine($"Response status: {response.StatusCode}");
-            var responseContent = await response.Content.ReadAsStringAsync();
-            Console.WriteLine($"Response content: {responseContent}");
+            var response = await _httpClient.PostAsync("/api/auth/login", content);
             
             if (!response.IsSuccessStatusCode)
             {
-                ErrorMessage = $"Login failed: {responseContent}";
-                HasError = true;
-                return null;
+                throw new HttpRequestException($"Login failed with status code: {response.StatusCode}");
             }
             
-            return await response.Content.ReadFromJsonAsync<AuthResponse>();
-        }
-        catch (HttpRequestException ex)
-        {
-            Console.WriteLine($"HTTP Request Error: {ex}");
-            ErrorMessage = $"Network error: {ex.Message}";
-            HasError = true;
-            return null;
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var loginResponse = JsonSerializer.Deserialize<LoginResponse>(responseContent);
+            
+            if (loginResponse == null)
+            {
+                throw new InvalidOperationException("Failed to deserialize login response");
+            }
+            
+            if (loginResponse.Status == "success")
+            {
+                SaveToken(loginResponse.Data.AccessToken);
+            }
+            
+            return loginResponse;
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Unexpected Error: {ex}");
-            ErrorMessage = $"Unexpected error: {ex.Message}";
-            HasError = true;
-            return null;
+            throw new Exception($"Login error: {ex.Message}", ex);
         }
     }
     
-    public void StoreToken(string token)
+    public void SaveToken(string token)
     {
-        // TODO: Implement secure token storage (e.g., SecureStorage)
+        _accessToken = token;
+        // For persistence across app restarts, you could add local storage here
+        // e.g., using ISecureStorage in Avalonia
+    }
+    
+    public string GetToken()
+    {
+        return _accessToken;
     }
     
     public void ClearToken()
     {
-        // TODO: Implement token clearing
+        _accessToken = string.Empty;
     }
 }
-

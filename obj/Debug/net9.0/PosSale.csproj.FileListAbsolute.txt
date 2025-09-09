@@ -74,3 +74,10 @@
 /home/david/Projects/Dotnet/PosSale/obj/Debug/net9.0/PosSale.csproj.Up2Date
 /home/david/Projects/Dotnet/PosSale/obj/Debug/net9.0/PosSale.genruntimeconfig.cache
 /home/david/Projects/Dotnet/PosSale/obj/Debug/net9.0/ref/PosSale.dll
+/home/david/Projects/Dotnet/PosSale/obj/Debug/net9.0/PosSale.sourcelink.json
+/home/david/Projects/Dotnet/PosSale/bin/Debug/net9.0/Avalonia.ReactiveUI.dll
+/home/david/Projects/Dotnet/PosSale/bin/Debug/net9.0/DynamicData.dll
+/home/david/Projects/Dotnet/PosSale/bin/Debug/net9.0/LoadingIndicators.Avalonia.dll
+/home/david/Projects/Dotnet/PosSale/bin/Debug/net9.0/ReactiveUI.dll
+/home/david/Projects/Dotnet/PosSale/bin/Debug/net9.0/Splat.dll
+/home/david/Projects/Dotnet/PosSale/bin/Debug/net9.0/System.Reactive.dll

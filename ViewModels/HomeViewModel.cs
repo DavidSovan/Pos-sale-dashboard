@@ -1,19 +1,28 @@
-using CommunityToolkit.Mvvm.ComponentModel;
+
+using ReactiveUI;
 using PosSale.Models;
 
 namespace PosSale.ViewModels;
-
-public partial class HomeViewModel : ViewModelBase
+public class HomeViewModel : ViewModelBase
 {
-    [ObservableProperty]
-    private string _welcomeMessage;
+    private string _userName = string.Empty;
+    private string _userRole = string.Empty;
     
-    [ObservableProperty]
-    private string _userRole;
-    
-    public HomeViewModel(User? user)
+    public string UserName
     {
-        WelcomeMessage = $"Hello, {user?.Name ?? "User"}!";
-        UserRole = $"You are logged in as: {user?.Role?.Name ?? "Unknown Role"}";
+        get => _userName;
+        set => this.RaiseAndSetIfChanged(ref _userName, value);
+    }
+    
+    public string UserRole
+    {
+        get => _userRole;
+        set => this.RaiseAndSetIfChanged(ref _userRole, value);
+    }
+    
+    public void Initialize(User user)
+    {
+        UserName = user.Name;
+        UserRole = user.Role.Name;
     }
 }

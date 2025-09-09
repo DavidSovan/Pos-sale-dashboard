@@ -1,17 +1,56 @@
-<UserControl xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:vm="using:PosSale.ViewModels"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="PosSale.Views.HomeView"
-             x:DataType="vm:HomeViewModel">
-    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="20">
-        <TextBlock Text="Welcome to POS System" FontSize="24" HorizontalAlignment="Center"/>
-        
-        <StackPanel Spacing="10">
-            <TextBlock Text="{Binding WelcomeMessage}" FontSize="18"/>
-            <TextBlock Text="{Binding UserRole}" FontSize="16"/>
+
+<Window 
+    x:Class="PosSale.Views.HomeView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:PosSale.ViewModels"
+    mc:Ignorable="d"
+    x:DataType="vm:HomeViewModel"
+    Width="800"
+    Height="600"
+    WindowStartupLocation="CenterScreen"
+    Title="POS System - Home">
+    
+    <Grid Margin="20">
+        <StackPanel>
+            <TextBlock Text="Home Screen" 
+                       FontSize="28"
+                       FontWeight="Bold"
+                       HorizontalAlignment="Center"
+                       Margin="0,0,0,30"/>
+            
+            <Border Background="#f0f0f0"
+                    CornerRadius="10"
+                    Padding="20">
+                <StackPanel>
+                    <TextBlock Text="User Information" 
+                               FontSize="18"
+                               FontWeight="SemiBold"
+                               Foreground="Black"
+                               Margin="0,0,0,15"/>
+                    
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        
+                        <TextBlock Text="Name:" Grid.Row="0" Grid.Column="0" Margin="0,0,10,10" Foreground="Black"/>
+                        <TextBlock Text="{Binding UserName}" Grid.Row="0" Grid.Column="1" Margin="0,0,0,10" Foreground="Black"/>
+                        
+                        <TextBlock Text="Role:" Grid.Row="1" Grid.Column="0" Margin="0,0,10,10" Foreground="Black"/>
+                        <TextBlock Text="{Binding UserRole}" Grid.Row="1" Grid.Column="1" Margin="0,0,0,10" Foreground="Black"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
         </StackPanel>
-    </StackPanel>
-</UserControl>
+    </Grid>
+</Window>
