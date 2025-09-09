@@ -82,7 +82,7 @@ public class LoginViewModel : ViewModelBase
         }
         catch (Exception ex)
         {
-            ErrorMessage = $"Login error: {ex.Message}";
+            ErrorMessage = $"Login error: {ex.Message}\n{ex.StackTrace}";
         }
         finally
         {

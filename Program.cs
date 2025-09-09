@@ -30,16 +30,19 @@ internal class Program
             Console.WriteLine($"Application failed to start: {ex}");
         }
     }
-    
+
     private static void ConfigureServices(IServiceCollection services)
     {
-        services.AddSingleton<HttpClient>(_ => new HttpClient 
-        { 
-            BaseAddress = new Uri("http://127.0.0.1:8000") 
+        services.AddSingleton<HttpClient>(_ => new HttpClient
+        {
+            BaseAddress = new Uri("http://127.0.0.1:8000")
         });
         services.AddSingleton<IAuthService, AuthService>();
-        services.AddTransient<LoginViewModel>();
-        services.AddTransient<HomeViewModel>();
+    services.AddSingleton<ISaleService, SaleService>();
+    services.AddTransient<LoginViewModel>();
+    services.AddTransient<HomeViewModel>();
+    services.AddTransient<SaleViewModel>();
+        
     }
     
     public static AppBuilder BuildAvaloniaApp()

@@ -1,6 +1,7 @@
 using System.Reactive;
 using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
+using Microsoft.Extensions.DependencyInjection;
 using PosSale.ViewModels;
 using ReactiveUI;
 
@@ -16,8 +17,12 @@ public partial class LoginView : ReactiveWindow<LoginViewModel>
             {
                 d(ViewModel.LoginSuccessful.RegisterHandler(interaction =>
                 {
-                    var homeView = new HomeView();
-                    homeView.ViewModel.Initialize(interaction.Input.Data.User);
+                    var homeViewModel = Program.ServiceProvider?.GetService<HomeViewModel>();
+                    var homeView = new HomeView
+                    {
+                        DataContext = homeViewModel
+                    };
+                    homeViewModel?.Initialize(interaction.Input.Data.User);
                     
                     this.Hide();
                     homeView.Show();

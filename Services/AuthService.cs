@@ -38,14 +38,15 @@ public class AuthService : IAuthService
             }
             
             var responseContent = await response.Content.ReadAsStringAsync();
-            var loginResponse = JsonSerializer.Deserialize<LoginResponse>(responseContent);
+            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+            var loginResponse = JsonSerializer.Deserialize<LoginResponse>(responseContent, options);
             
             if (loginResponse == null)
             {
                 throw new InvalidOperationException("Failed to deserialize login response");
             }
             
-            if (loginResponse.Status == "success")
+            if (loginResponse.Status == "success" && loginResponse.Data != null)
             {
                 SaveToken(loginResponse.Data.AccessToken);
             }

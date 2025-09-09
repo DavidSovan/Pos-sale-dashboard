@@ -1,15 +1,27 @@
-
 using Avalonia.Controls;
+using Avalonia.ReactiveUI;
 using PosSale.ViewModels;
+using ReactiveUI;
 
 namespace PosSale.Views;
-public partial class HomeView : Window
+public partial class HomeView : ReactiveWindow<HomeViewModel>
 {
-    public HomeViewModel ViewModel { get; } = new HomeViewModel();
-    
     public HomeView()
     {
         InitializeComponent();
-        DataContext = ViewModel;
+
+        this.WhenActivated(d =>
+        {
+            if (ViewModel != null)
+            {
+                d(ViewModel.NavigateToSale.RegisterHandler(async interaction =>
+                {
+                    var saleId = interaction.Input;
+                    var saleView = new SaleView(saleId);
+                    saleView.Show();
+                    this.Close();
+                }));
+            }
+        });
     }
 }
