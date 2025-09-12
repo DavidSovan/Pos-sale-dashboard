@@ -5,7 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:reactiveUi="clr-namespace:Avalonia.ReactiveUI;assembly=Avalonia.ReactiveUI"
-    xmlns:li="clr-namespace:LoadingIndicators.Avalonia;assembly=LoadingIndicators.Avalonia"
+    
     xmlns:vm="using:PosSale.ViewModels"
     xmlns:converters="using:PosSale.Converters"
     x:DataType="vm:LoginViewModel"
@@ -42,12 +42,10 @@
                          IsEnabled="{Binding IsLoading, Converter={x:Static converters:BoolConverters.Not}}"/>
             </StackPanel>
             
-            <li:LoadingIndicator IsActive="{Binding IsLoading}" 
-                                 Mode="ThreeDots"
-                                 SpeedRatio="1.5"
-                                 HorizontalAlignment="Center"
-                                 Height="30"
-                                 IsVisible="{Binding IsLoading}"/>
+            <ProgressBar IsIndeterminate="True" 
+                         IsVisible="{Binding IsLoading}"
+                         HorizontalAlignment="Center"
+                         Height="30" />
             
             <TextBlock Text="{Binding ErrorMessage}"
                        Foreground="Red"

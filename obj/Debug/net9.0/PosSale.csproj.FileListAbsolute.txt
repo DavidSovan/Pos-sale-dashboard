@@ -5,6 +5,7 @@
 /home/david/Projects/Dotnet/PosSale/obj/Debug/net9.0/PosSale.AssemblyInfoInputs.cache
 /home/david/Projects/Dotnet/PosSale/obj/Debug/net9.0/PosSale.AssemblyInfo.cs
 /home/david/Projects/Dotnet/PosSale/obj/Debug/net9.0/PosSale.csproj.CoreCompileInputs.cache
+/home/david/Projects/Dotnet/PosSale/obj/Debug/net9.0/PosSale.sourcelink.json
 /home/david/Projects/Dotnet/PosSale/obj/Debug/net9.0/PosSale.dll
 /home/david/Projects/Dotnet/PosSale/obj/Debug/net9.0/refint/PosSale.dll
 /home/david/Projects/Dotnet/PosSale/obj/Debug/net9.0/PosSale.pdb
@@ -30,6 +31,7 @@
 /home/david/Projects/Dotnet/PosSale/bin/Debug/net9.0/Avalonia.Fonts.Inter.dll
 /home/david/Projects/Dotnet/PosSale/bin/Debug/net9.0/Avalonia.FreeDesktop.dll
 /home/david/Projects/Dotnet/PosSale/bin/Debug/net9.0/Avalonia.Native.dll
+/home/david/Projects/Dotnet/PosSale/bin/Debug/net9.0/Avalonia.ReactiveUI.dll
 /home/david/Projects/Dotnet/PosSale/bin/Debug/net9.0/Avalonia.Remote.Protocol.dll
 /home/david/Projects/Dotnet/PosSale/bin/Debug/net9.0/Avalonia.Skia.dll
 /home/david/Projects/Dotnet/PosSale/bin/Debug/net9.0/Avalonia.Themes.Fluent.dll
@@ -38,11 +40,15 @@
 /home/david/Projects/Dotnet/PosSale/bin/Debug/net9.0/Avalonia.Win32.dll
 /home/david/Projects/Dotnet/PosSale/bin/Debug/net9.0/Avalonia.X11.dll
 /home/david/Projects/Dotnet/PosSale/bin/Debug/net9.0/CommunityToolkit.Mvvm.dll
+/home/david/Projects/Dotnet/PosSale/bin/Debug/net9.0/DynamicData.dll
 /home/david/Projects/Dotnet/PosSale/bin/Debug/net9.0/HarfBuzzSharp.dll
 /home/david/Projects/Dotnet/PosSale/bin/Debug/net9.0/MicroCom.Runtime.dll
 /home/david/Projects/Dotnet/PosSale/bin/Debug/net9.0/Microsoft.Extensions.DependencyInjection.dll
 /home/david/Projects/Dotnet/PosSale/bin/Debug/net9.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll
+/home/david/Projects/Dotnet/PosSale/bin/Debug/net9.0/ReactiveUI.dll
 /home/david/Projects/Dotnet/PosSale/bin/Debug/net9.0/SkiaSharp.dll
+/home/david/Projects/Dotnet/PosSale/bin/Debug/net9.0/Splat.dll
+/home/david/Projects/Dotnet/PosSale/bin/Debug/net9.0/System.Reactive.dll
 /home/david/Projects/Dotnet/PosSale/bin/Debug/net9.0/Tmds.DBus.Protocol.dll
 /home/david/Projects/Dotnet/PosSale/bin/Debug/net9.0/runtimes/win-arm64/native/av_libglesv2.dll
 /home/david/Projects/Dotnet/PosSale/bin/Debug/net9.0/runtimes/win-x64/native/av_libglesv2.dll
@@ -74,10 +80,4 @@
 /home/david/Projects/Dotnet/PosSale/obj/Debug/net9.0/PosSale.csproj.Up2Date
 /home/david/Projects/Dotnet/PosSale/obj/Debug/net9.0/PosSale.genruntimeconfig.cache
 /home/david/Projects/Dotnet/PosSale/obj/Debug/net9.0/ref/PosSale.dll
-/home/david/Projects/Dotnet/PosSale/obj/Debug/net9.0/PosSale.sourcelink.json
-/home/david/Projects/Dotnet/PosSale/bin/Debug/net9.0/Avalonia.ReactiveUI.dll
-/home/david/Projects/Dotnet/PosSale/bin/Debug/net9.0/DynamicData.dll
-/home/david/Projects/Dotnet/PosSale/bin/Debug/net9.0/LoadingIndicators.Avalonia.dll
-/home/david/Projects/Dotnet/PosSale/bin/Debug/net9.0/ReactiveUI.dll
-/home/david/Projects/Dotnet/PosSale/bin/Debug/net9.0/Splat.dll
-/home/david/Projects/Dotnet/PosSale/bin/Debug/net9.0/System.Reactive.dll
+/home/david/Projects/Dotnet/PosSale/bin/Debug/net9.0/Avalonia.Controls.DataGrid.dll

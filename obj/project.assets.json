@@ -124,6 +124,22 @@
           }
         }
       },
+      "Avalonia.Controls.DataGrid/11.3.3": {
+        "type": "package",
+        "dependencies": {
+          "Avalonia": "11.3.3"
+        },
+        "compile": {
+          "lib/net8.0/Avalonia.Controls.DataGrid.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/Avalonia.Controls.DataGrid.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "Avalonia.Desktop/11.3.3": {
         "type": "package",
         "dependencies": {
@@ -496,18 +512,6 @@
             "assetType": "native",
             "rid": "win-x86"
           }
-        }
-      },
-      "LoadingIndicators.Avalonia/11.0.11.1": {
-        "type": "package",
-        "dependencies": {
-          "Avalonia": "11.0.11"
-        },
-        "compile": {
-          "lib/net8.0/LoadingIndicators.Avalonia.dll": {}
-        },
-        "runtime": {
-          "lib/net8.0/LoadingIndicators.Avalonia.dll": {}
         }
       },
       "MicroCom.Runtime/0.11.0": {
@@ -1024,6 +1028,25 @@
         "lib/netstandard2.0/Avalonia.Controls.ColorPicker.xml"
       ]
     },
+    "Avalonia.Controls.DataGrid/11.3.3": {
+      "sha512": "ezMCta5SsfkxNMEzVOrh0vamnnjQ3QDBMCdT9vzytD+aL4mViXhCaRa1h+hNbmY/HL4c38KGAdoDITRl7OlcLg==",
+      "type": "package",
+      "path": "avalonia.controls.datagrid/11.3.3",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "avalonia.controls.datagrid.11.3.3.nupkg.sha512",
+        "avalonia.controls.datagrid.nuspec",
+        "lib/net6.0/Avalonia.Controls.DataGrid.dll",
+        "lib/net6.0/Avalonia.Controls.DataGrid.xml",
+        "lib/net8.0/Avalonia.Controls.DataGrid.dll",
+        "lib/net8.0/Avalonia.Controls.DataGrid.xml",
+        "lib/netstandard2.0/Avalonia.Controls.DataGrid.dll",
+        "lib/netstandard2.0/Avalonia.Controls.DataGrid.xml",
+        "readme.md"
+      ]
+    },
     "Avalonia.Desktop/11.3.3": {
       "sha512": "+EcYtta+d9GJRHKzVx45UcyGe6Kehe3KgF4sQ54d91ia/+rBn2lkv9DSG794Nqj0ObnAMPa58DHaAAyvdRa6NA==",
       "type": "package",
@@ -1458,23 +1481,6 @@
         "runtimes/win-arm64/native/libHarfBuzzSharp.dll",
         "runtimes/win-x64/native/libHarfBuzzSharp.dll",
         "runtimes/win-x86/native/libHarfBuzzSharp.dll"
-      ]
-    },
-    "LoadingIndicators.Avalonia/11.0.11.1": {
-      "sha512": "A4hPrrOMRtgcGRqnc1sscaWudF99C+YKhRBaYnf1wVxfOVOwTVEM4I7qdUU4gyAL2oiBzXw/zuC4dD1XrdR9PA==",
-      "type": "package",
-      "path": "loadingindicators.avalonia/11.0.11.1",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "LICENSE.md",
-        "README.md",
-        "icon.png",
-        "lib/net6.0/LoadingIndicators.Avalonia.dll",
-        "lib/net7.0/LoadingIndicators.Avalonia.dll",
-        "lib/net8.0/LoadingIndicators.Avalonia.dll",
-        "loadingindicators.avalonia.11.0.11.1.nupkg.sha512",
-        "loadingindicators.avalonia.nuspec"
       ]
     },
     "MicroCom.Runtime/0.11.0": {
@@ -2096,13 +2102,13 @@
   "projectFileDependencyGroups": {
     "net9.0": [
       "Avalonia >= 11.3.3",
+      "Avalonia.Controls.DataGrid >= 11.3.3",
       "Avalonia.Desktop >= 11.3.3",
       "Avalonia.Diagnostics >= 11.3.3",
       "Avalonia.Fonts.Inter >= 11.3.3",
       "Avalonia.ReactiveUI >= 11.3.3",
       "Avalonia.Themes.Fluent >= 11.3.3",
       "CommunityToolkit.Mvvm >= 8.2.1",
-      "LoadingIndicators.Avalonia >= 11.0.11.1",
       "Microsoft.Extensions.DependencyInjection >= 8.0.0",
       "System.Net.Http.Json >= 8.0.0"
     ]
@@ -2154,6 +2160,10 @@
             "target": "Package",
             "version": "[11.3.3, )"
           },
+          "Avalonia.Controls.DataGrid": {
+            "target": "Package",
+            "version": "[11.3.3, )"
+          },
           "Avalonia.Desktop": {
             "target": "Package",
             "version": "[11.3.3, )"
@@ -2177,10 +2187,6 @@
           "CommunityToolkit.Mvvm": {
             "target": "Package",
             "version": "[8.2.1, )"
-          },
-          "LoadingIndicators.Avalonia": {
-            "target": "Package",
-            "version": "[11.0.11.1, )"
           },
           "Microsoft.Extensions.DependencyInjection": {
             "target": "Package",

@@ -1,4 +1,3 @@
-
 <Window 
     x:Class="PosSale.Views.SaleView"
     xmlns="https://github.com/avaloniaui"
@@ -6,17 +5,163 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="using:PosSale.ViewModels"
+    xmlns:conv="using:PosSale.Converters"
+    xmlns:models="using:PosSale.Models"
     x:DataType="vm:SaleViewModel"
+    
     mc:Ignorable="d"
     Width="800"
     Height="600"
     WindowStartupLocation="CenterScreen"
     Title="POS System - Sale">
     
-    <Grid Margin="20">
-        <TextBlock Text="{Binding SaleIdText}" 
-                   FontSize="24"
-                   HorizontalAlignment="Center"
-                   VerticalAlignment="Center"/>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*" />
+            <ColumnDefinition Width="2*" />
+        </Grid.ColumnDefinitions>
+        
+        <!-- Left Panel: Products -->
+        <Border Grid.Column="0" BorderBrush="LightGray" BorderThickness="0,0,1,0">
+            <Grid Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                
+                <!-- Search and Filter -->
+                <StackPanel Grid.Row="0" Orientation="Horizontal" Spacing="10" Margin="0,0,0,10">
+                    <TextBox 
+                        Text="{Binding SearchText}" 
+                        Watermark="Search products..."
+                        Width="200"
+                        KeyDown="OnSearchKeyDown"/>
+                    
+                    <ComboBox 
+                        Name="CategoryCombo"
+                        ItemsSource="{Binding Categories}"
+                        Width="150"
+                        SelectionChanged="OnCategorySelectionChanged">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate x:DataType="models:Category">
+                                <TextBlock Text="{Binding Name}" />
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    
+                    <Button Content="Search" Command="{Binding SearchCommand}" />
+                </StackPanel>
+                
+                <!-- Error Message -->
+                <TextBlock Grid.Row="1" 
+                           Text="{Binding ErrorMessage}"
+                           Foreground="Red"
+                           TextWrapping="Wrap"
+                           IsVisible="{Binding ErrorMessage, Converter={x:Static conv:StringConverters.IsNotNullOrEmpty}}"
+                           Margin="0,0,0,10"/>
+                
+                <!-- Debug Info -->
+                <TextBlock Grid.Row="2" 
+                           Text="{Binding Products.Count, StringFormat='Products loaded: {0}'}"
+                           Foreground="Blue"
+                           Margin="0,0,0,10"/>
+                
+                <!-- Products List -->
+                <ListBox Grid.Row="3" 
+                         ItemsSource="{Binding Products}"
+                         SelectionMode="Single">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate x:DataType="models:Product">
+                            <Border BorderBrush="Gray" BorderThickness="1" Margin="2" Padding="5">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="2*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <TextBlock Grid.Column="0" Text="{Binding Name}" FontWeight="Bold" />
+                                    <TextBlock Grid.Column="1" Text="{Binding Price, StringFormat='{}{0:C}'}" />
+                                    <TextBlock Grid.Column="2" Text="{Binding Stock}" />
+                                    <TextBlock Grid.Column="3" Text="{Binding Category.Name}" />
+                                    <Button Grid.Column="4" Content="Add" 
+                                            Command="{Binding $parent[Window].DataContext.AddProductCommand}"
+                                            CommandParameter="{Binding}"
+                                            Margin="5,0,0,0" />
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                
+                <!-- Pagination -->
+                <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0">
+                    <Button Content="Previous" 
+                            Command="{Binding PreviousPageCommand}" />
+                    
+                    <TextBlock Text="{Binding CurrentPage, StringFormat='Page {0} of {1}'}" 
+                               Margin="10,0"
+                               VerticalAlignment="Center" />
+                    
+                    <Button Content="Next" 
+                            Command="{Binding NextPageCommand}" />
+                </StackPanel>
+            </Grid>
+        </Border>
+        
+        <!-- Right Panel: Cart -->
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            
+            <TextBlock Text="Cart" 
+                       FontSize="18"
+                       FontWeight="Bold"
+                       Margin="10"
+                       HorizontalAlignment="Center" />
+            
+            <!-- Cart Items -->
+            <DataGrid Grid.Row="1" 
+                      ItemsSource="{Binding Sale.SaleItems}"
+                      AutoGenerateColumns="False"
+                      IsReadOnly="True"
+                      HeadersVisibility="Column"
+                      Margin="10">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Product" Binding="{Binding Product.Name}" Width="2*" />
+                    <DataGridTextColumn Header="Qty" Binding="{Binding Quantity}" Width="*" />
+                    <DataGridTextColumn Header="Price" Binding="{Binding Price, StringFormat='{}{0:C}'}" Width="*" />
+                    <DataGridTextColumn Header="Subtotal" Binding="{Binding Subtotal, StringFormat='{}{0:C}'}" Width="*" />
+                </DataGrid.Columns>
+            </DataGrid>
+            
+            <!-- Total -->
+            <Border Grid.Row="2" Background="#f0f0f0" Padding="10">
+                <StackPanel>
+                    <TextBlock Text="{Binding Sale.TotalAmount, StringFormat='Total: {0:C}'}" 
+                               FontSize="16"
+                               FontWeight="Bold"
+                               HorizontalAlignment="Center" />
+                </StackPanel>
+            </Border>
+        </Grid>
+        
+        <!-- Loading Overlay -->
+        <Border Background="#80000000"
+                IsVisible="{Binding IsLoading}"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch">
+            <Grid>
+                <ProgressBar IsIndeterminate="True" Width="150" Height="8" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Grid>
+        </Border>
     </Grid>
 </Window>

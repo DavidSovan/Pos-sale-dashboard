@@ -38,10 +38,11 @@ internal class Program
             BaseAddress = new Uri("http://127.0.0.1:8000")
         });
         services.AddSingleton<IAuthService, AuthService>();
-    services.AddSingleton<ISaleService, SaleService>();
-    services.AddTransient<LoginViewModel>();
-    services.AddTransient<HomeViewModel>();
-    services.AddTransient<SaleViewModel>();
+        services.AddSingleton<ISaleService, SaleService>();
+        services.AddSingleton<IProductService, ProductService>();
+        services.AddTransient<LoginViewModel>();
+        services.AddTransient<HomeViewModel>();
+        services.AddTransient<SaleViewModel>();
         
     }
     

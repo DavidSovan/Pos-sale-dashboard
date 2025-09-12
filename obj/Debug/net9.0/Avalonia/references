@@ -1,5 +1,6 @@
 /home/david/.nuget/packages/avalonia/11.3.3/ref/net8.0/Avalonia.Base.dll
 /home/david/.nuget/packages/avalonia.controls.colorpicker/11.3.3/lib/net8.0/Avalonia.Controls.ColorPicker.dll
+/home/david/.nuget/packages/avalonia.controls.datagrid/11.3.3/lib/net8.0/Avalonia.Controls.DataGrid.dll
 /home/david/.nuget/packages/avalonia/11.3.3/ref/net8.0/Avalonia.Controls.dll
 /home/david/.nuget/packages/avalonia/11.3.3/ref/net8.0/Avalonia.DesignerSupport.dll
 /home/david/.nuget/packages/avalonia.desktop/11.3.3/lib/net8.0/Avalonia.Desktop.dll
@@ -26,7 +27,6 @@
 /home/david/.nuget/packages/communitytoolkit.mvvm/8.2.1/lib/net6.0/CommunityToolkit.Mvvm.dll
 /home/david/.nuget/packages/dynamicdata/8.4.1/lib/net8.0/DynamicData.dll
 /home/david/.nuget/packages/harfbuzzsharp/8.3.1.1/lib/net8.0/HarfBuzzSharp.dll
-/home/david/.nuget/packages/loadingindicators.avalonia/11.0.11.1/lib/net8.0/LoadingIndicators.Avalonia.dll
 /home/david/.nuget/packages/microcom.runtime/0.11.0/lib/net5.0/MicroCom.Runtime.dll
 /usr/share/dotnet/packs/Microsoft.NETCore.App.Ref/9.0.8/ref/net9.0/Microsoft.CSharp.dll
 /home/david/.nuget/packages/microsoft.extensions.dependencyinjection.abstractions/8.0.0/lib/net8.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll

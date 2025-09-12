@@ -7,7 +7,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="using:PosSale.ViewModels"
-    xmlns:li="using:LoadingIndicators.Avalonia"
+    
     mc:Ignorable="d"
     x:DataType="vm:HomeViewModel"
     Width="800"
@@ -64,12 +64,10 @@
                     Margin="0,0,0,20"/>
 
             <!-- Loading Indicator -->
-            <li:LoadingIndicator IsActive="{Binding IsLoading}"
-                                 Mode="ThreeDots"
-                                 SpeedRatio="1.5"
-                                 HorizontalAlignment="Center"
-                                 Height="30"
-                                 IsVisible="{Binding IsLoading}"/>
+            <ProgressBar IsIndeterminate="True"
+                         IsVisible="{Binding IsLoading}"
+                         HorizontalAlignment="Center"
+                         Height="30" />
 
             <!-- Error Message -->
             <TextBlock Text="{Binding ErrorMessage}"

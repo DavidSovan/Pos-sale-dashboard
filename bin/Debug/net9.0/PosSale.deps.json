@@ -9,13 +9,13 @@
       "PosSale/1.0.0": {
         "dependencies": {
           "Avalonia": "11.3.3",
+          "Avalonia.Controls.DataGrid": "11.3.3",
           "Avalonia.Desktop": "11.3.3",
           "Avalonia.Diagnostics": "11.3.3",
           "Avalonia.Fonts.Inter": "11.3.3",
           "Avalonia.ReactiveUI": "11.3.3",
           "Avalonia.Themes.Fluent": "11.3.3",
           "CommunityToolkit.Mvvm": "8.2.1",
-          "LoadingIndicators.Avalonia": "11.0.11.1",
           "Microsoft.Extensions.DependencyInjection": "8.0.0",
           "System.Net.Http.Json": "8.0.0"
         },
@@ -103,6 +103,17 @@
         },
         "runtime": {
           "lib/net8.0/Avalonia.Controls.ColorPicker.dll": {
+            "assemblyVersion": "11.3.3.0",
+            "fileVersion": "11.3.3.0"
+          }
+        }
+      },
+      "Avalonia.Controls.DataGrid/11.3.3": {
+        "dependencies": {
+          "Avalonia": "11.3.3"
+        },
+        "runtime": {
+          "lib/net8.0/Avalonia.Controls.DataGrid.dll": {
             "assemblyVersion": "11.3.3.0",
             "fileVersion": "11.3.3.0"
           }
@@ -385,17 +396,6 @@
           }
         }
       },
-      "LoadingIndicators.Avalonia/11.0.11.1": {
-        "dependencies": {
-          "Avalonia": "11.3.3"
-        },
-        "runtime": {
-          "lib/net8.0/LoadingIndicators.Avalonia.dll": {
-            "assemblyVersion": "11.0.11.1",
-            "fileVersion": "11.0.11.1"
-          }
-        }
-      },
       "MicroCom.Runtime/0.11.0": {
         "runtime": {
           "lib/net5.0/MicroCom.Runtime.dll": {
@@ -580,6 +580,13 @@
       "path": "avalonia.controls.colorpicker/11.3.3",
       "hashPath": "avalonia.controls.colorpicker.11.3.3.nupkg.sha512"
     },
+    "Avalonia.Controls.DataGrid/11.3.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-ezMCta5SsfkxNMEzVOrh0vamnnjQ3QDBMCdT9vzytD+aL4mViXhCaRa1h+hNbmY/HL4c38KGAdoDITRl7OlcLg==",
+      "path": "avalonia.controls.datagrid/11.3.3",
+      "hashPath": "avalonia.controls.datagrid.11.3.3.nupkg.sha512"
+    },
     "Avalonia.Desktop/11.3.3": {
       "type": "package",
       "serviceable": true,
@@ -712,13 +719,6 @@
       "sha512": "sha512-UsJtQsfAJoFDZrXc4hCUfRPMqccfKZ0iumJ/upcUjz/cmsTgVFGNEL5yaJWmkqsuFYdMWbj/En5/kS4PFl9hBA==",
       "path": "harfbuzzsharp.nativeassets.win32/8.3.1.1",
       "hashPath": "harfbuzzsharp.nativeassets.win32.8.3.1.1.nupkg.sha512"
-    },
-    "LoadingIndicators.Avalonia/11.0.11.1": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-A4hPrrOMRtgcGRqnc1sscaWudF99C+YKhRBaYnf1wVxfOVOwTVEM4I7qdUU4gyAL2oiBzXw/zuC4dD1XrdR9PA==",
-      "path": "loadingindicators.avalonia/11.0.11.1",
-      "hashPath": "loadingindicators.avalonia.11.0.11.1.nupkg.sha512"
     },
     "MicroCom.Runtime/0.11.0": {
       "type": "package",
