@@ -99,7 +99,6 @@ public class SaleViewModel : ViewModelBase
             
             // Load categories
             var categories = await _productService.GetCategoriesAsync();
-            Console.WriteLine($"[SaleViewModel] Categories loaded: {categories.Count}");
             await Dispatcher.UIThread.InvokeAsync(() =>
             {
                 Categories.Clear();
@@ -107,7 +106,6 @@ public class SaleViewModel : ViewModelBase
                 {
                     Categories.Add(category);
                 }
-                Console.WriteLine($"[SaleViewModel] Categories added to UI: {Categories.Count}");
             });
             
             // Load products
@@ -130,9 +128,7 @@ public class SaleViewModel : ViewModelBase
             ErrorMessage = string.Empty;
             var response = await _productService.GetProductsAsync(SelectedCategoryId, SearchText, CurrentPage);
             
-            // Be tolerant of API variations: populate if data/products exist regardless of status casing/content.
             var products = response?.Data?.Products;
-            Console.WriteLine($"[SaleViewModel] Products from API: {products?.Count ?? 0}");
             if (products is not null)
             {
                 await Dispatcher.UIThread.InvokeAsync(() =>
@@ -142,7 +138,6 @@ public class SaleViewModel : ViewModelBase
                     {
                         Products.Add(product);
                     }
-                    Console.WriteLine($"[SaleViewModel] Products added to UI: {Products.Count}");
 
                     var lastPage = response?.Data?.Pagination?.LastPage;
                     TotalPages = lastPage > 0 ? lastPage.Value : 1;
@@ -155,14 +150,12 @@ public class SaleViewModel : ViewModelBase
                     Products.Clear();
                     ErrorMessage = "No products found.";
                     TotalPages = 1;
-                    Console.WriteLine($"[SaleViewModel] No products - cleared collection");
                 });
             }
         }
         catch (Exception ex)
         {
             ErrorMessage = $"Error loading products: {ex.Message}";
-            Console.WriteLine($"[SaleViewModel] Error: {ex.Message}");
         }
     }
     

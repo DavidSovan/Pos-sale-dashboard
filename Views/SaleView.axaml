@@ -44,7 +44,8 @@
                         Name="CategoryCombo"
                         ItemsSource="{Binding Categories}"
                         Width="150"
-                        SelectionChanged="OnCategorySelectionChanged">
+                        SelectionChanged="OnCategorySelectionChanged"
+                        PlaceholderText="All Categories">
                         <ComboBox.ItemTemplate>
                             <DataTemplate x:DataType="models:Category">
                                 <TextBlock Text="{Binding Name}" />

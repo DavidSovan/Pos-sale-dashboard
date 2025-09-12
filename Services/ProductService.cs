@@ -56,7 +56,6 @@ public class ProductService : IProductService
             
             var queryString = queryParams.Count > 0 ? $"?{string.Join("&", queryParams)}" : "";
             var url = $"/api/products{queryString}";
-            Console.WriteLine($"[ProductService] GET {url}");
             var response = await _httpClient.GetAsync(url);
             
             if (!response.IsSuccessStatusCode)
@@ -65,12 +64,8 @@ public class ProductService : IProductService
             }
             
             var content = await response.Content.ReadAsStringAsync();
-            Console.WriteLine($"[ProductService] Products payload: {content}");
             var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true, NumberHandling = JsonNumberHandling.AllowReadingFromString };
             var productResponse = JsonSerializer.Deserialize<ProductResponse>(content, options);
-            
-            var count = productResponse?.Data?.Products?.Count ?? 0;
-            Console.WriteLine($"[ProductService] Parsed products count: {count}");
             
             return productResponse ?? new ProductResponse();
         }
