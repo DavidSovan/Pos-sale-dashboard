@@ -31,25 +31,25 @@
                     <TextBlock Text="User Information"
                                FontSize="18"
                                FontWeight="SemiBold"
-                               Margin="0,0,0,15"/>
+                               Margin="0,0,0,15"
+                               Foreground="Black"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
 
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
 
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
+                                <TextBlock Text="Name:" Grid.Row="0" Grid.Column="0" Margin="0,0,10,10" Foreground="Black"/>
+                                <TextBlock Text="{Binding UserName}" Grid.Row="0" Grid.Column="1" Margin="0,0,0,10" Foreground="Black"/>
 
-                        <TextBlock Text="Name:" Grid.Row="0" Grid.Column="0" Margin="0,0,10,10"/>
-                        <TextBlock Text="{Binding UserName}" Grid.Row="0" Grid.Column="1" Margin="0,0,0,10"/>
-
-                        <TextBlock Text="Role:" Grid.Row="1" Grid.Column="0" Margin="0,0,10,10"/>
-                        <TextBlock Text="{Binding UserRole}" Grid.Row="1" Grid.Column="1" Margin="0,0,0,10"/>
-                    </Grid>
+                                <TextBlock Text="Role:" Grid.Row="1" Grid.Column="0" Margin="0,0,10,10" Foreground="Black"/>
+                                <TextBlock Text="{Binding UserRole}" Grid.Row="1" Grid.Column="1" Margin="0,0,0,10" Foreground="Black"/>
+                            </Grid>
                 </StackPanel>
             </Border>
 
