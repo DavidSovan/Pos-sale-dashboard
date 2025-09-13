@@ -1,0 +1,39 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!-- Backgrounds -->
+    <Color x:Key="DarkBlueBackground">#0B1220</Color>
+    <Color x:Key="DarkBlueSurface">#13213D</Color>
+    <Color x:Key="DarkBlueCard">#1A2C4B</Color>
+  
+    <!-- Text -->
+    <Color x:Key="TextPrimary">#E6EEF8</Color>
+    <Color x:Key="TextSecondary">#94A3B8</Color>
+    <Color x:Key="TextMuted">#5C6B85</Color>
+  
+    <!-- Accent colors -->
+    <Color x:Key="PrimaryBlue">#2563EB</Color>
+    <Color x:Key="PrimaryBlueDark">#1D4ED8</Color>
+    <Color x:Key="SecondaryCyan">#06B6D4</Color>
+    
+    <!-- Semantic colors -->
+    <Color x:Key="SuccessGreen">#10B981</Color>
+    <Color x:Key="ErrorRed">#EF4444</Color>
+    <Color x:Key="WarningYellow">#F59E0B</Color>
+  
+    <!-- Brushes -->
+    <SolidColorBrush x:Key="BackgroundBrush" Color="{StaticResource DarkBlueBackground}" />
+    <SolidColorBrush x:Key="SurfaceBrush" Color="{StaticResource DarkBlueSurface}" />
+    <SolidColorBrush x:Key="CardBrush" Color="{StaticResource DarkBlueCard}" />
+    <SolidColorBrush x:Key="TextBrush" Color="{StaticResource TextPrimary}" />
+    <SolidColorBrush x:Key="TextSecondaryBrush" Color="{StaticResource TextSecondary}" />
+    <SolidColorBrush x:Key="TextMutedBrush" Color="{StaticResource TextMuted}" />
+  
+    <SolidColorBrush x:Key="PrimaryBrush" Color="{StaticResource PrimaryBlue}" />
+    <SolidColorBrush x:Key="PrimaryHoverBrush" Color="{StaticResource PrimaryBlueDark}" />
+    <SolidColorBrush x:Key="SecondaryBrush" Color="{StaticResource SecondaryCyan}" />
+  
+    <SolidColorBrush x:Key="SuccessBrush" Color="{StaticResource SuccessGreen}" />
+    <SolidColorBrush x:Key="ErrorBrush" Color="{StaticResource ErrorRed}" />
+    <SolidColorBrush x:Key="WarningBrush" Color="{StaticResource WarningYellow}" />
+  </ResourceDictionary>
+  

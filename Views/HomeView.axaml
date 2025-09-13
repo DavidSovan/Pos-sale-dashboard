@@ -15,24 +15,42 @@
     WindowStartupLocation="CenterScreen"
     Title="POS System - Home">
 
-    <Grid Margin="20">
+    <!-- View-specific styles -->
+    <Window.Styles>
+        <!-- Primary button style using theme brushes -->
+        <Style Selector="Button">
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="Background" Value="{DynamicResource PrimaryBrush}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+        </Style>
+        <Style Selector="Button:pointerover">
+            <Setter Property="Background" Value="{DynamicResource PrimaryHoverBrush}"/>
+        </Style>
+        <Style Selector="Button:pressed">
+            <Setter Property="Background" Value="{DynamicResource PrimaryHoverBrush}"/>
+        </Style>
+    </Window.Styles>
+
+    <Grid Margin="20" Background="{DynamicResource BackgroundBrush}">
         <StackPanel>
             <TextBlock Text="Cashier Dashboard"
                        FontSize="28"
                        FontWeight="Bold"
                        HorizontalAlignment="Center"
-                       Margin="0,0,0,30"/>
+                       Margin="0,0,0,30" Foreground="{DynamicResource TextBrush}"/>
 
-            <Border Background="#f0f0f0"
-                    CornerRadius="10"
+            <Border Background="{DynamicResource CardBrush}"
+                    CornerRadius="14"
                     Padding="20"
-                    Margin="0,0,0,30">
+                    Margin="0,0,0,30"
+                    BoxShadow="0 10 30 #22000000, 0 4 12 #14000000">
                 <StackPanel>
                     <TextBlock Text="User Information"
                                FontSize="18"
                                FontWeight="SemiBold"
                                Margin="0,0,0,15"
-                               Foreground="Black"/>
+                               Foreground="{DynamicResource TextBrush}"/>
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
@@ -44,11 +62,11 @@
                                     <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
 
-                                <TextBlock Text="Name:" Grid.Row="0" Grid.Column="0" Margin="0,0,10,10" Foreground="Black"/>
-                                <TextBlock Text="{Binding UserName}" Grid.Row="0" Grid.Column="1" Margin="0,0,0,10" Foreground="Black"/>
+                                <TextBlock Text="Name:" Grid.Row="0" Grid.Column="0" Margin="0,0,10,10" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                                <TextBlock Text="{Binding UserName}" Grid.Row="0" Grid.Column="1" Margin="0,0,0,10" Foreground="{DynamicResource TextBrush}"/>
 
-                                <TextBlock Text="Role:" Grid.Row="1" Grid.Column="0" Margin="0,0,10,10" Foreground="Black"/>
-                                <TextBlock Text="{Binding UserRole}" Grid.Row="1" Grid.Column="1" Margin="0,0,0,10" Foreground="Black"/>
+                                <TextBlock Text="Role:" Grid.Row="1" Grid.Column="0" Margin="0,0,10,10" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                                <TextBlock Text="{Binding UserRole}" Grid.Row="1" Grid.Column="1" Margin="0,0,0,10" Foreground="{DynamicResource TextBrush}"/>
                             </Grid>
                 </StackPanel>
             </Border>
@@ -59,19 +77,22 @@
                     IsEnabled="{Binding IsLoading, Converter={x:Static c:BoolConverters.Not}}"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    FontSize="24"
-                    Padding="40,20"
-                    Margin="0,0,0,20"/>
+                    FontSize="22"
+                    Padding="40,18"
+                    Margin="0,0,0,20"
+                    Background="{DynamicResource PrimaryBrush}"
+                    Foreground="White"/>
 
             <!-- Loading Indicator -->
             <ProgressBar IsIndeterminate="True"
                          IsVisible="{Binding IsLoading}"
                          HorizontalAlignment="Center"
-                         Height="30" />
+                         Height="30" 
+                         Foreground="{DynamicResource AccentBrush}"/>
 
             <!-- Error Message -->
             <TextBlock Text="{Binding ErrorMessage}"
-                       Foreground="Red"
+                       Foreground="{DynamicResource ErrorBrush}"
                        TextWrapping="Wrap"
                        HorizontalAlignment="Center"
                        IsVisible="{Binding ErrorMessage, Converter={x:Static c:StringConverters.IsNotNullOrEmpty}}"/>

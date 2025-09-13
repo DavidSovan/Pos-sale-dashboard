@@ -14,15 +14,44 @@
     Height="600"
     WindowStartupLocation="CenterScreen"
     Title="POS System - Sale">
+    <!-- View-specific styles -->
+    <Window.Styles>
+        <!-- Primary button styling -->
+        <Style Selector="Button">
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Background" Value="{DynamicResource PrimaryBrush}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+        </Style>
+        <Style Selector="Button:pointerover">
+            <Setter Property="Background" Value="{DynamicResource PrimaryHoverBrush}"/>
+        </Style>
+        <Style Selector="Button:pressed">
+            <Setter Property="Background" Value="{DynamicResource PrimaryHoverBrush}"/>
+        </Style>
+
+        <!-- Input styling -->
+        <Style Selector="TextBox, ComboBox">
+            <Setter Property="CornerRadius" Value="6"/>
+            <Setter Property="Padding" Value="8,6"/>
+        </Style>
+        
+        <!-- Card styling -->
+        <Style Selector="Border[BorderThickness=1]">
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="BoxShadow" Value="0 6 20 #1A000000, 0 2 8 #14000000"/>
+            <Setter Property="Background" Value="{DynamicResource CardBrush}"/>
+        </Style>
+    </Window.Styles>
     
-    <Grid>
+    <Grid Background="{DynamicResource BackgroundBrush}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="3*" />
             <ColumnDefinition Width="2*" />
         </Grid.ColumnDefinitions>
         
         <!-- Left Panel: Products -->
-        <Border Grid.Column="0" BorderBrush="LightGray" BorderThickness="0,0,1,0">
+        <Border Grid.Column="0" BorderBrush="{DynamicResource TextMutedBrush}" BorderThickness="0,0,1,0">
             <Grid Margin="10">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -57,7 +86,7 @@
                 <!-- Error Message -->
                 <TextBlock Grid.Row="1" 
                            Text="{Binding ErrorMessage}"
-                           Foreground="Red"
+                           Foreground="{DynamicResource ErrorBrush}"
                            TextWrapping="Wrap"
                            IsVisible="{Binding ErrorMessage, Converter={x:Static conv:StringConverters.IsNotNullOrEmpty}}"
                            Margin="0,0,0,10"/>
@@ -65,16 +94,17 @@
                 <!-- Debug Info -->
                 <TextBlock Grid.Row="2" 
                            Text="{Binding Products.Count, StringFormat='Products loaded: {0}'}"
-                           Foreground="Blue"
+                           Foreground="{DynamicResource TextSecondaryBrush}"
                            Margin="0,0,0,10"/>
                 
                 <!-- Products List -->
                 <ListBox Grid.Row="3" 
                          ItemsSource="{Binding Products}"
-                         SelectionMode="Single">
+                         SelectionMode="Single"
+                         Background="{DynamicResource SurfaceBrush}">
                     <ListBox.ItemTemplate>
                         <DataTemplate x:DataType="models:Product">
-                            <Border BorderBrush="Gray" BorderThickness="1" Margin="2" Padding="5">
+                            <Border BorderThickness="1" BorderBrush="{DynamicResource TextMutedBrush}" Margin="4" Padding="8" CornerRadius="10" BoxShadow="0 6 20 #1A000000, 0 2 8 #14000000" Background="{DynamicResource CardBrush}">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="2*" />
@@ -84,10 +114,10 @@
                                         <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
                                     
-                                    <TextBlock Grid.Column="0" Text="{Binding Name}" FontWeight="Bold" />
-                                    <TextBlock Grid.Column="1" Text="{Binding Price, StringFormat='${0:F2}'}" />
-                                    <TextBlock Grid.Column="2" Text="{Binding Stock}" />
-                                    <TextBlock Grid.Column="3" Text="{Binding Category.Name}" />
+                                    <TextBlock Grid.Column="0" Text="{Binding Name}" FontWeight="Bold" Foreground="{DynamicResource TextBrush}" />
+                                    <TextBlock Grid.Column="1" Text="{Binding Price, StringFormat='${0:F2}'}" Foreground="{DynamicResource TextBrush}" />
+                                    <TextBlock Grid.Column="2" Text="{Binding Stock}" Foreground="{DynamicResource TextSecondaryBrush}" />
+                                    <TextBlock Grid.Column="3" Text="{Binding Category.Name}" Foreground="{DynamicResource TextSecondaryBrush}" />
                                     <Button Grid.Column="4" Content="Add" 
                                             Command="{Binding $parent[Window].DataContext.AddProductCommand}"
                                             CommandParameter="{Binding}"
@@ -127,22 +157,23 @@
                        FontWeight="Bold"
                        Margin="10"
                        HorizontalAlignment="Center"
-                       Foreground="Black" />
+                       Foreground="{DynamicResource TextBrush}" />
             <!-- Debug: show cart items count -->
             <TextBlock Grid.Row="0"
                        HorizontalAlignment="Right"
                        Margin="0,10,10,0"
-                       Foreground="Blue"
+                       Foreground="{DynamicResource TextSecondaryBrush}"
                        Text="{Binding CartItems.Count, StringFormat='Cart items: {0}'}"/>
             
             <!-- Cart Items -->
             <ListBox Grid.Row="1"
                      ItemsSource="{Binding CartItems}"
                      Margin="10"
-                     Foreground="Black">
+                     Background="{DynamicResource SurfaceBrush}"
+                     Foreground="{DynamicResource TextBrush}">
                 <ListBox.ItemTemplate>
                     <DataTemplate x:DataType="models:SaleItem">
-                        <Border BorderBrush="Gray" BorderThickness="1" Margin="2" Padding="6">
+                        <Border BorderThickness="1" Margin="4" Padding="8" CornerRadius="10" BoxShadow="0 6 20 #1A000000, 0 2 8 #14000000" Background="{DynamicResource CardBrush}">
                             <Grid ColumnDefinitions="2*,Auto,Auto,Auto,Auto,Auto" ColumnSpacing="8" VerticalAlignment="Center">
                                 <TextBlock Grid.Column="0" Text="{Binding Product.Name}" />
                                 <TextBlock Grid.Column="1" Text="Qty:" VerticalAlignment="Center" />
@@ -156,7 +187,7 @@
                                     <Button Content="Remove" 
                                             Command="{Binding $parent[Window].((vm:SaleViewModel)DataContext).RemoveItemCommand}"
                                             CommandParameter="{Binding}"
-                                            Background="Red"
+                                            Background="{DynamicResource ErrorBrush}"
                                             Foreground="White" />
                                 </StackPanel>
                             </Grid>
@@ -166,7 +197,7 @@
             </ListBox>
             
             <!-- Summary -->
-            <Border Grid.Row="2" Background="#f0f0f0" Padding="10">
+            <Border Grid.Row="2" BorderThickness="1" Margin="10" Padding="12" CornerRadius="10" BoxShadow="0 6 20 #1A000000, 0 2 8 #14000000" Background="{DynamicResource CardBrush}">
                 <StackPanel>
                     <Grid>
                         <Grid.RowDefinitions>
@@ -179,20 +210,20 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         
-                        <TextBlock Text="Subtotal:" Grid.Row="0" Grid.Column="0" Margin="0,0,10,5" Foreground="Black" />
-                        <TextBlock Text="{Binding Subtotal, StringFormat='${0:F2}'}" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Right" Margin="0,0,0,5" Foreground="Black" />
+                        <TextBlock Text="Subtotal:" Grid.Row="0" Grid.Column="0" Margin="0,0,10,5" Foreground="{DynamicResource TextBrush}" />
+                        <TextBlock Text="{Binding Subtotal, StringFormat='${0:F2}'}" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Right" Margin="0,0,0,5" Foreground="{DynamicResource TextBrush}" />
                         
-                        <TextBlock Text="Discount:" Grid.Row="1" Grid.Column="0" Margin="0,0,10,5" Foreground="Black"/>
+                        <TextBlock Text="Discount:" Grid.Row="1" Grid.Column="0" Margin="0,0,10,5" Foreground="{DynamicResource TextBrush}"/>
                         <TextBox Text="{Binding Discount, StringFormat='{}{0:F2}'}" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right" Margin="0,0,0,5" Width="80" />
                         
-                        <TextBlock Text="Total:" Grid.Row="2" Grid.Column="0" Margin="0,0,10,0" FontWeight="Bold" Foreground="Black" />
-                        <TextBlock Text="{Binding Total, StringFormat='${0:F2}'}" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right" FontWeight="Bold" Foreground="Black" />
+                        <TextBlock Text="Total:" Grid.Row="2" Grid.Column="0" Margin="0,0,10,0" FontWeight="Bold" Foreground="{DynamicResource TextBrush}" />
+                        <TextBlock Text="{Binding Total, StringFormat='${0:F2}'}" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right" FontWeight="Bold" Foreground="{DynamicResource TextBrush}" />
                     </Grid>
                 </StackPanel>
             </Border>
             
             <!-- Payment and Checkout -->
-            <Border Grid.Row="3" Background="#e0e0e0" Padding="10">
+            <Border Grid.Row="3" BorderThickness="1" Margin="10" Padding="12" CornerRadius="10" BoxShadow="0 6 20 #1A000000, 0 2 8 #14000000" Background="{DynamicResource CardBrush}">
                 <StackPanel>
                     <Grid Margin="0,0,0,10">
                         <Grid.RowDefinitions>
@@ -204,13 +235,13 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         
-                        <TextBlock Text="Payment Method:" Grid.Row="0" Grid.Column="0" Margin="0,0,10,5" Foreground="Black"/>
+                        <TextBlock Text="Payment Method:" Grid.Row="0" Grid.Column="0" Margin="0,0,10,5" Foreground="{DynamicResource TextBrush}"/>
                         <ComboBox Grid.Row="0" Grid.Column="1"
                                   ItemsSource="{Binding PaymentMethods}"
                                   SelectedItem="{Binding PaymentMethod}"
                                   Width="120" Margin="0,0,0,5"/>
                         
-                        <TextBlock Text="Amount:" Grid.Row="1" Grid.Column="0" Margin="0,0,10,0" Foreground="Black"/>
+                        <TextBlock Text="Amount:" Grid.Row="1" Grid.Column="0" Margin="0,0,10,0" Foreground="{DynamicResource TextBrush}"/>
                         <TextBox Text="{Binding PaymentAmount, StringFormat='{}{0:F2}'}" Grid.Row="1" Grid.Column="1" Width="80" HorizontalAlignment="Left" />
                     </Grid>
                     
@@ -220,7 +251,7 @@
                             Height="40"
                             FontSize="16"
                             FontWeight="Bold"
-                            Background="Green"
+                            Background="{DynamicResource SuccessBrush}"
                             Foreground="White" />
                 </StackPanel>
             </Border>

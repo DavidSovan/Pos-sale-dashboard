@@ -18,46 +18,92 @@
     <Window.Resources>
         <converters:BoolToVisibilityConverter x:Key="BoolToVisibility"/>
     </Window.Resources>
-    
-    <Grid Margin="20">
-        <StackPanel Spacing="15">
-            <TextBlock Text="POS System Login" 
-                       FontSize="24"
-                       FontWeight="Bold"
-                       HorizontalAlignment="Center"
-                       Margin="0,0,0,20"/>
-            
-            <StackPanel>
-                <TextBlock Text="Email" Margin="0,0,0,5"/>
-                <TextBox Text="{Binding Email}" 
-                         Watermark="Enter your email"
-                         IsEnabled="{Binding IsLoading, Converter={x:Static converters:BoolConverters.Not}}"/>
+
+    <!-- Styles must be declared in the Styles section, not Resources -->
+    <reactiveUi:ReactiveWindow.Styles>
+        <!-- TextBox style: rounded, padded -->
+        <Style Selector="TextBox">
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Padding" Value="10,8"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource TextMutedBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="{DynamicResource SurfaceBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+        </Style>
+
+        <!-- Button style: primary look -->
+        <Style Selector="Button">
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Background" Value="{DynamicResource PrimaryBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+        </Style>
+
+        <Style Selector="Button:pointerover">
+            <Setter Property="Background" Value="{DynamicResource PrimaryHoverBrush}"/>
+        </Style>
+
+        <Style Selector="Button:pressed">
+            <Setter Property="Background" Value="{DynamicResource PrimaryHoverBrush}"/>
+        </Style>
+    </reactiveUi:ReactiveWindow.Styles>
+
+    <!-- Background layer uses themed background brush -->
+    <Grid Background="{DynamicResource BackgroundBrush}">
+
+        <!-- Centered card -->
+        <Border Width="360"
+                Padding="24"
+                CornerRadius="14"
+                Background="{DynamicResource CardBrush}"
+                BoxShadow="0 10 30 #22000000, 0 4 12 #14000000"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+            <StackPanel Spacing="16">
+                <TextBlock Text="POS System Login" 
+                           FontSize="24"
+                           FontWeight="Bold"
+                           HorizontalAlignment="Center"
+                           Margin="0,0,0,8"/>
+
+                <TextBlock Text="Welcome back. Please sign in to continue." 
+                           Foreground="{DynamicResource TextSecondaryBrush}"
+                           HorizontalAlignment="Center"
+                           Margin="0,0,0,6"/>
+                
+                <StackPanel Spacing="6">
+                    <TextBlock Text="Email" Margin="2,0,0,0" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                    <TextBox Text="{Binding Email}" 
+                             Watermark="Enter your email"
+                             IsEnabled="{Binding IsLoading, Converter={x:Static converters:BoolConverters.Not}}"/>
+                </StackPanel>
+
+                <StackPanel Spacing="6">
+                    <TextBlock Text="Password" Margin="2,0,0,0" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                    <TextBox Text="{Binding Password}" 
+                             PasswordChar="•"
+                             Watermark="Enter your password"
+                             IsEnabled="{Binding IsLoading, Converter={x:Static converters:BoolConverters.Not}}"/>
+                </StackPanel>
+
+                <ProgressBar IsIndeterminate="True" 
+                             IsVisible="{Binding IsLoading}"
+                             Height="6"
+                             Margin="0,4,0,0"/>
+
+                <TextBlock Text="{Binding ErrorMessage}"
+                           Foreground="{DynamicResource ErrorBrush}"
+                           TextWrapping="Wrap"
+                           HorizontalAlignment="Center"
+                           Margin="0,4,0,0"
+                           IsVisible="{Binding ErrorMessage, Converter={x:Static converters:StringConverters.IsNotNullOrEmpty}}"/>
+
+                <Button Content="Login" 
+                        Command="{Binding LoginCommand}"
+                        IsEnabled="{Binding IsLoading, Converter={x:Static converters:BoolConverters.Not}}"
+                        HorizontalAlignment="Stretch"
+                        Height="42"/>
             </StackPanel>
-            
-            <StackPanel>
-                <TextBlock Text="Password" Margin="0,0,0,5"/>
-                <TextBox Text="{Binding Password}" 
-                         PasswordChar="•"
-                         Watermark="Enter your password"
-                         IsEnabled="{Binding IsLoading, Converter={x:Static converters:BoolConverters.Not}}"/>
-            </StackPanel>
-            
-            <ProgressBar IsIndeterminate="True" 
-                         IsVisible="{Binding IsLoading}"
-                         HorizontalAlignment="Center"
-                         Height="30" />
-            
-            <TextBlock Text="{Binding ErrorMessage}"
-                       Foreground="Red"
-                       TextWrapping="Wrap"
-                       HorizontalAlignment="Center"
-                       IsVisible="{Binding ErrorMessage, Converter={x:Static converters:StringConverters.IsNotNullOrEmpty}}"/>
-            
-            <Button Content="Login" 
-                    Command="{Binding LoginCommand}"
-                    IsEnabled="{Binding IsLoading, Converter={x:Static converters:BoolConverters.Not}}"
-                    HorizontalAlignment="Stretch"
-                    Height="40"/>
-        </StackPanel>
+        </Border>
     </Grid>
 </reactiveUi:ReactiveWindow>

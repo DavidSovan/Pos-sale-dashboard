@@ -24,6 +24,9 @@ build_property.EnableCodeStyleSeverity =
 [/home/david/Projects/Dotnet/PosSale/App.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
+[/home/david/Projects/Dotnet/PosSale/Themes/DarkBlueTheme.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
 [/home/david/Projects/Dotnet/PosSale/Views/HomeView.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
