@@ -111,4 +111,105 @@ public class ProductService : IProductService
             throw new Exception($"Error adding item to sale: {ex.Message}", ex);
         }
     }
+    
+    public async Task<SaleItemResponse> UpdateSaleItemAsync(int saleId, int itemId, int quantity, string token)
+    {
+        try
+        {
+            var request = new UpdateItemRequest
+            {
+                Quantity = quantity
+            };
+            
+            var json = JsonSerializer.Serialize(request);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            
+            // Set authorization header
+            _httpClient.DefaultRequestHeaders.Authorization = 
+                new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+            
+            var response = await _httpClient.PatchAsync($"/api/sales/{saleId}/items/{itemId}", content);
+            
+            if (!response.IsSuccessStatusCode)
+            {
+                var errorContent = await response.Content.ReadAsStringAsync();
+                throw new HttpRequestException($"Failed to update sale item: {response.StatusCode}. Response: {errorContent}");
+            }
+            
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true, NumberHandling = JsonNumberHandling.AllowReadingFromString };
+            var saleItemResponse = JsonSerializer.Deserialize<SaleItemResponse>(responseContent, options);
+            
+            return saleItemResponse ?? new SaleItemResponse();
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"Error updating sale item: {ex.Message}", ex);
+        }
+    }
+    
+    public async Task<SaleItemResponse> RemoveSaleItemAsync(int saleId, int itemId, string token)
+    {
+        try
+        {
+            // Set authorization header
+            _httpClient.DefaultRequestHeaders.Authorization = 
+                new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+            
+            var response = await _httpClient.DeleteAsync($"/api/sales/{saleId}/items/{itemId}");
+            
+            if (!response.IsSuccessStatusCode)
+            {
+                var errorContent = await response.Content.ReadAsStringAsync();
+                throw new HttpRequestException($"Failed to remove sale item: {response.StatusCode}. Response: {errorContent}");
+            }
+            
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true, NumberHandling = JsonNumberHandling.AllowReadingFromString };
+            var saleItemResponse = JsonSerializer.Deserialize<SaleItemResponse>(responseContent, options);
+            
+            return saleItemResponse ?? new SaleItemResponse();
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"Error removing sale item: {ex.Message}", ex);
+        }
+    }
+    
+    public async Task<CheckoutResponse> CheckoutSaleAsync(int saleId, string paymentMethod, decimal amount, string token)
+    {
+        try
+        {
+            var request = new CheckoutRequest
+            {
+                PaymentMethod = paymentMethod,
+                Amount = amount
+            };
+            
+            var json = JsonSerializer.Serialize(request);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            
+            // Set authorization header
+            _httpClient.DefaultRequestHeaders.Authorization = 
+                new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+            
+            var response = await _httpClient.PatchAsync($"/api/sales/{saleId}/checkout", content);
+            
+            if (!response.IsSuccessStatusCode)
+            {
+                var errorContent = await response.Content.ReadAsStringAsync();
+                throw new HttpRequestException($"Failed to checkout sale: {response.StatusCode}. Response: {errorContent}");
+            }
+            
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true, NumberHandling = JsonNumberHandling.AllowReadingFromString };
+            var checkoutResponse = JsonSerializer.Deserialize<CheckoutResponse>(responseContent, options);
+            
+            return checkoutResponse ?? new CheckoutResponse();
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"Error checking out sale: {ex.Message}", ex);
+        }
+    }
 }

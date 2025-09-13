@@ -1,5 +1,6 @@
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
@@ -17,11 +18,15 @@ public class SaleViewModel : ViewModelBase
     
     private string _searchText = string.Empty;
     private int? _selectedCategoryId;
+    private Category? _selectedCategory;
     private int _currentPage = 1;
     private int _totalPages = 1;
     private bool _isLoading;
     private string _errorMessage = string.Empty;
     private Sale _sale = new Sale();
+    private decimal _discount;
+    private string _paymentMethod = "cash";
+    private decimal _paymentAmount;
     
     public string SearchText
     {
@@ -33,6 +38,18 @@ public class SaleViewModel : ViewModelBase
     {
         get => _selectedCategoryId;
         set => this.RaiseAndSetIfChanged(ref _selectedCategoryId, value);
+    }
+    
+    public Category? SelectedCategory
+    {
+        get => _selectedCategory;
+        set
+        {
+            this.RaiseAndSetIfChanged(ref _selectedCategory, value);
+            SelectedCategoryId = value?.Id;
+            CurrentPage = 1;
+            _ = LoadProducts();
+        }
     }
     
     public int CurrentPage
@@ -62,17 +79,56 @@ public class SaleViewModel : ViewModelBase
     public Sale Sale
     {
         get => _sale;
-        set => this.RaiseAndSetIfChanged(ref _sale, value);
+        set
+        {
+            this.RaiseAndSetIfChanged(ref _sale, value);
+            // Keep CartItems synchronized with Sale.SaleItems
+            SyncCartItems();
+            // Update computed totals
+            this.RaisePropertyChanged(nameof(Subtotal));
+            this.RaisePropertyChanged(nameof(Total));
+        }
     }
+    
+    public decimal Discount
+    {
+        get => _discount;
+        set => this.RaiseAndSetIfChanged(ref _discount, value);
+    }
+    
+    public string PaymentMethod
+    {
+        get => _paymentMethod;
+        set => this.RaiseAndSetIfChanged(ref _paymentMethod, value);
+    }
+    
+    public decimal PaymentAmount
+    {
+        get => _paymentAmount;
+        set => this.RaiseAndSetIfChanged(ref _paymentAmount, value);
+    }
+    
+    public decimal Subtotal => Sale.SaleItems.Sum(item => item.Subtotal);
+    public decimal Total => Subtotal - Discount;
     
     public ObservableCollection<Category> Categories { get; } = new ObservableCollection<Category>();
     public ObservableCollection<Product> Products { get; } = new ObservableCollection<Product>();
+    public ObservableCollection<SaleItem> CartItems { get; } = new ObservableCollection<SaleItem>();
+    public ObservableCollection<string> PaymentMethods { get; } = new ObservableCollection<string>
+    {
+        "cash",
+        "card",
+        "digital"
+    };
     
     public ReactiveCommand<Unit, Unit> LoadDataCommand { get; }
     public ReactiveCommand<Unit, Unit> SearchCommand { get; }
     public ReactiveCommand<Unit, Unit> NextPageCommand { get; }
     public ReactiveCommand<Unit, Unit> PreviousPageCommand { get; }
     public ReactiveCommand<Product, Unit> AddProductCommand { get; }
+    public ReactiveCommand<SaleItem, Unit> UpdateItemCommand { get; }
+    public ReactiveCommand<SaleItem, Unit> RemoveItemCommand { get; }
+    public ReactiveCommand<Unit, Unit> CheckoutCommand { get; }
     
     public SaleViewModel(int saleId, IProductService productService, IAuthService authService)
     {
@@ -85,9 +141,37 @@ public class SaleViewModel : ViewModelBase
         NextPageCommand = ReactiveCommand.CreateFromTask(GoToNextPage);
         PreviousPageCommand = ReactiveCommand.CreateFromTask(GoToPreviousPage);
         AddProductCommand = ReactiveCommand.CreateFromTask<Product>(AddProductToSale);
+        UpdateItemCommand = ReactiveCommand.CreateFromTask<SaleItem>(UpdateSaleItem);
+        RemoveItemCommand = ReactiveCommand.CreateFromTask<SaleItem>(RemoveSaleItem);
+        CheckoutCommand = ReactiveCommand.CreateFromTask(CheckoutSale);
         
         // Load initial data
         LoadDataCommand.Execute().Subscribe();
+        
+        // Update payment amount when total changes
+        this.WhenAnyValue(x => x.Total).Subscribe(total =>
+        {
+            PaymentAmount = total;
+        });
+    }
+
+    private void SyncCartItems()
+    {
+        // Ensure this runs on UI thread
+        if (!Dispatcher.UIThread.CheckAccess())
+        {
+            Dispatcher.UIThread.Post(SyncCartItems);
+            return;
+        }
+
+        CartItems.Clear();
+        if (Sale?.SaleItems != null)
+        {
+            foreach (var si in Sale.SaleItems)
+            {
+                CartItems.Add(si);
+            }
+        }
     }
     
     private async Task LoadData()
@@ -201,8 +285,13 @@ public class SaleViewModel : ViewModelBase
             
             if (response.Status == "success")
             {
-                // Update the sale with the latest data
-                Sale = response.Data.Sale;
+                // Update the sale with the latest data on the UI thread
+                await Dispatcher.UIThread.InvokeAsync(() =>
+                {
+                    Sale = response.Data.Sale;
+                    this.RaisePropertyChanged(nameof(Subtotal));
+                    this.RaisePropertyChanged(nameof(Total));
+                });
             }
             else
             {
@@ -212,6 +301,143 @@ public class SaleViewModel : ViewModelBase
         catch (Exception ex)
         {
             ErrorMessage = $"Error adding product to sale: {ex.Message}";
+        }
+        finally
+        {
+            IsLoading = false;
+        }
+    }
+    
+    private async Task UpdateSaleItem(SaleItem item)
+    {
+        try
+        {
+            IsLoading = true;
+            ErrorMessage = string.Empty;
+            
+            var token = _authService.GetToken();
+            if (string.IsNullOrEmpty(token))
+            {
+                ErrorMessage = "Not authenticated. Please log in again.";
+                return;
+            }
+            
+            var response = await _productService.UpdateSaleItemAsync(_saleId, item.Id, item.Quantity, token);
+            
+            if (response.Status == "success")
+            {
+                // Update the sale with the latest data on the UI thread
+                await Dispatcher.UIThread.InvokeAsync(() =>
+                {
+                    Sale = response.Data.Sale;
+                    this.RaisePropertyChanged(nameof(Subtotal));
+                    this.RaisePropertyChanged(nameof(Total));
+                });
+            }
+            else
+            {
+                ErrorMessage = "Failed to update item quantity";
+            }
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Error updating item: {ex.Message}";
+        }
+        finally
+        {
+            IsLoading = false;
+        }
+    }
+    
+    private async Task RemoveSaleItem(SaleItem item)
+    {
+        try
+        {
+            IsLoading = true;
+            ErrorMessage = string.Empty;
+            
+            var token = _authService.GetToken();
+            if (string.IsNullOrEmpty(token))
+            {
+                ErrorMessage = "Not authenticated. Please log in again.";
+                return;
+            }
+            
+            var response = await _productService.RemoveSaleItemAsync(_saleId, item.Id, token);
+            
+            if (response.Status == "success")
+            {
+                // Update the sale with the latest data on the UI thread
+                await Dispatcher.UIThread.InvokeAsync(() =>
+                {
+                    Sale = response.Data.Sale;
+                    this.RaisePropertyChanged(nameof(Subtotal));
+                    this.RaisePropertyChanged(nameof(Total));
+                });
+            }
+            else
+            {
+                ErrorMessage = "Failed to remove item from sale";
+            }
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Error removing item: {ex.Message}";
+        }
+        finally
+        {
+            IsLoading = false;
+        }
+    }
+    
+    private async Task CheckoutSale()
+    {
+        try
+        {
+            IsLoading = true;
+            ErrorMessage = string.Empty;
+            
+            if (Sale.SaleItems.Count == 0)
+            {
+                ErrorMessage = "Cannot checkout an empty sale";
+                return;
+            }
+            
+            if (PaymentAmount < Total)
+            {
+                ErrorMessage = "Payment amount is less than the total";
+                return;
+            }
+            
+            var token = _authService.GetToken();
+            if (string.IsNullOrEmpty(token))
+            {
+                ErrorMessage = "Not authenticated. Please log in again.";
+                return;
+            }
+            
+            var response = await _productService.CheckoutSaleAsync(_saleId, PaymentMethod, PaymentAmount, token);
+            
+            if (response.Status == "success")
+            {
+                // Show success message and potentially navigate to a receipt screen
+                await Dispatcher.UIThread.InvokeAsync(() =>
+                {
+                    ErrorMessage = "Sale completed successfully!";
+                    // Clear the sale after successful checkout
+                    Sale = new Sale();
+                    this.RaisePropertyChanged(nameof(Subtotal));
+                    this.RaisePropertyChanged(nameof(Total));
+                });
+            }
+            else
+            {
+                ErrorMessage = "Failed to checkout sale";
+            }
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Error during checkout: {ex.Message}";
         }
         finally
         {

@@ -1,59 +1,41 @@
-using System;
 using Avalonia.Controls;
-using Avalonia.ReactiveUI;
-using Microsoft.Extensions.DependencyInjection;
-using PosSale.Services;
-using PosSale.ViewModels;
 using Avalonia.Input;
-using ReactiveUI;
-using System.Reactive;
-using System.Reactive.Linq;
+using Avalonia.Interactivity;
+using Avalonia.ReactiveUI;
+using PosSale.ViewModels;
 using PosSale.Models;
+using PosSale.Services;
+using System;
 
 namespace PosSale.Views;
 public partial class SaleView : ReactiveWindow<SaleViewModel>
 {
-    public SaleView()
-    {
-        // This constructor is needed for the XAML previewer.
-    }
-
-    public SaleView(int saleId)
-    {
-        InitializeComponent();
-        var productService = Program.ServiceProvider?.GetService<IProductService>();
-        var authService = Program.ServiceProvider?.GetService<IAuthService>();
-        ViewModel = new SaleViewModel(saleId, productService!, authService!);
-        DataContext = ViewModel;
-    }
-
     public SaleView(int saleId, IProductService productService, IAuthService authService)
     {
         InitializeComponent();
         ViewModel = new SaleViewModel(saleId, productService, authService);
         DataContext = ViewModel;
     }
-
-    private void OnSearchKeyDown(object? sender, KeyEventArgs e)
+    
+    private void OnSearchKeyDown(object sender, KeyEventArgs e)
     {
-        if (e.Key == Key.Enter && ViewModel is not null)
+        if (e.Key == Key.Enter)
         {
-            var observer = Observer.Create<Unit>(_ => { });
-            ViewModel.SearchCommand.Execute().Subscribe(observer);
-            e.Handled = true;
+            ViewModel?.SearchCommand.Execute().Subscribe(
+                onNext: result => { },
+                onError: ex => { },
+                onCompleted: () => { });
         }
     }
-
-    private void OnCategorySelectionChanged(object? sender, SelectionChangedEventArgs e)
+    
+    private void OnQuantityLostFocus(object sender, RoutedEventArgs e)
     {
-        if (ViewModel is null) return;
-        if (sender is ComboBox combo)
+        if (sender is TextBox textBox && textBox.Tag is SaleItem item)
         {
-            var selected = combo.SelectedItem as Category;
-            ViewModel.SelectedCategoryId = selected?.Id;
-            // Refresh products for the selected category
-            var observer = Observer.Create<Unit>(_ => { });
-            ViewModel.SearchCommand.Execute().Subscribe(observer);
+            ViewModel?.UpdateItemCommand.Execute(item).Subscribe(
+                onNext: result => { },
+                onError: ex => { },
+                onCompleted: () => { });
         }
     }
 }
