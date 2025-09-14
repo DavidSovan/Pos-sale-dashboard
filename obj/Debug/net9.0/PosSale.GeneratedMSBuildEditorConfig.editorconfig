@@ -36,5 +36,8 @@ build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 [/home/david/Projects/Dotnet/PosSale/Views/MainWindow.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
+[/home/david/Projects/Dotnet/PosSale/Views/ReceiptView.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
 [/home/david/Projects/Dotnet/PosSale/Views/SaleView.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml

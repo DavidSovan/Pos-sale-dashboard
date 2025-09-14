@@ -11,4 +11,5 @@ public interface IProductService
     Task<SaleItemResponse> UpdateSaleItemAsync(int saleId, int itemId, int quantity, string token);
     Task<SaleItemResponse> RemoveSaleItemAsync(int saleId, int itemId, string token);
     Task<CheckoutResponse> CheckoutSaleAsync(int saleId, string paymentMethod, decimal amount, string token);
+    Task<ReceiptResponse> GetReceiptAsync(int saleId, string token);
 }

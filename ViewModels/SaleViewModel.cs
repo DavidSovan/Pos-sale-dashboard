@@ -130,6 +130,9 @@ public class SaleViewModel : ViewModelBase
     public ReactiveCommand<SaleItem, Unit> RemoveItemCommand { get; }
     public ReactiveCommand<Unit, Unit> CheckoutCommand { get; }
     
+    // Interaction to navigate to the receipt view
+    public Interaction<int, Unit> NavigateToReceipt { get; } = new Interaction<int, Unit>();
+    
     public SaleViewModel(int saleId, IProductService productService, IAuthService authService)
     {
         _saleId = saleId;
@@ -420,15 +423,8 @@ public class SaleViewModel : ViewModelBase
             
             if (response.Status == "success")
             {
-                // Show success message and potentially navigate to a receipt screen
-                await Dispatcher.UIThread.InvokeAsync(() =>
-                {
-                    ErrorMessage = "Sale completed successfully!";
-                    // Clear the sale after successful checkout
-                    Sale = new Sale();
-                    this.RaisePropertyChanged(nameof(Subtotal));
-                    this.RaisePropertyChanged(nameof(Total));
-                });
+                // Navigate to receipt screen
+                await NavigateToReceipt.Handle(_saleId);
             }
             else
             {

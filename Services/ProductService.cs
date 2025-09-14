@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using PosSale.Models;
 
 namespace PosSale.Services;
-public class ProductService : IProductService
+public partial class ProductService : IProductService
 {
     private readonly HttpClient _httpClient;
     
@@ -210,6 +210,34 @@ public class ProductService : IProductService
         catch (Exception ex)
         {
             throw new Exception($"Error checking out sale: {ex.Message}", ex);
+        }
+    }
+
+    public async Task<ReceiptResponse> GetReceiptAsync(int saleId, string token)
+    {
+        try
+        {
+            // Set authorization header
+            _httpClient.DefaultRequestHeaders.Authorization =
+                new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+            var response = await _httpClient.GetAsync($"/api/sales/{saleId}");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                var errorContent = await response.Content.ReadAsStringAsync();
+                throw new HttpRequestException($"Failed to fetch receipt: {response.StatusCode}. Response: {errorContent}");
+            }
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+            var receiptResponse = JsonSerializer.Deserialize<ReceiptResponse>(responseContent, options);
+
+            return receiptResponse ?? new ReceiptResponse();
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"Error fetching receipt: {ex.Message}", ex);
         }
     }
 }
