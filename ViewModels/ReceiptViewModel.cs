@@ -13,6 +13,7 @@ public class ReceiptViewModel : ViewModelBase
 {
     private readonly IProductService _productService;
     private readonly IAuthService _authService;
+    private readonly ISaleService _saleService;
     private readonly int _saleId;
     
     private bool _isLoading;
@@ -42,17 +43,31 @@ public class ReceiptViewModel : ViewModelBase
     public ReactiveCommand<Unit, Unit> LoadReceiptCommand { get; }
     public ReactiveCommand<Unit, Unit> NewSaleCommand { get; }
     
-    // Interaction to navigate back to home screen
-    public Interaction<Unit, Unit> NavigateToHome { get; } = new Interaction<Unit, Unit>();
+    // Interaction to navigate directly to a new Sale screen with the created saleId
+    public Interaction<int, Unit> NavigateToSale { get; } = new Interaction<int, Unit>();
     
-    public ReceiptViewModel(int saleId, IProductService productService, IAuthService authService)
+    public ReceiptViewModel(int saleId, IProductService productService, IAuthService authService, ISaleService saleService)
     {
         _saleId = saleId;
         _productService = productService;
         _authService = authService;
+        _saleService = saleService;
         
         LoadReceiptCommand = ReactiveCommand.CreateFromTask(LoadReceipt);
-        NewSaleCommand = ReactiveCommand.CreateFromTask(StartNewSale);
+        // Start a brand-new sale and navigate directly to SaleView
+        NewSaleCommand = ReactiveCommand.CreateFromTask(StartNewSaleAsync);
+
+        // Prevent unhandled exceptions from crashing the app
+        LoadReceiptCommand.ThrownExceptions.Subscribe(ex =>
+        {
+            IsLoading = false;
+            ErrorMessage = $"Error loading receipt: {ex.Message}";
+        });
+        NewSaleCommand.ThrownExceptions.Subscribe(ex =>
+        {
+            IsLoading = false;
+            ErrorMessage = $"New sale error: {ex.Message}";
+        });
         
         // Load receipt data automatically
         LoadReceiptCommand.Execute().Subscribe();
@@ -100,8 +115,45 @@ public class ReceiptViewModel : ViewModelBase
         }
     }
     
-    private async Task StartNewSale()
+    private async Task StartNewSaleAsync()
     {
-        await NavigateToHome.Handle(Unit.Default);
+        try
+        {
+            IsLoading = true;
+            ErrorMessage = string.Empty;
+            
+            var token = _authService.GetToken();
+            if (string.IsNullOrEmpty(token))
+            {
+                ErrorMessage = "Not authenticated. Please log in again.";
+                return;
+            }
+            
+            // Add a timeout to avoid hanging indefinitely
+            var startTask = _saleService.StartSaleAsync(token);
+            var completed = await Task.WhenAny(startTask, Task.Delay(TimeSpan.FromSeconds(15)));
+            if (completed != startTask)
+            {
+                ErrorMessage = "Starting a new sale timed out. Please try again.";
+                return;
+            }
+            var response = await startTask;
+            if (response.Status == "success")
+            {
+                await NavigateToSale.Handle(response.Data.SaleId);
+            }
+            else
+            {
+                ErrorMessage = "Failed to start a new sale.";
+            }
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"Error starting new sale: {ex.Message}";
+        }
+        finally
+        {
+            IsLoading = false;
+        }
     }
 }

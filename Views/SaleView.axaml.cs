@@ -8,6 +8,8 @@ using PosSale.Services;
 using System;
 using ReactiveUI;
 using System.Reactive;
+using Avalonia;
+using Avalonia.Controls.ApplicationLifetimes;
 
 namespace PosSale.Views;
 public partial class SaleView : ReactiveWindow<SaleViewModel>
@@ -30,6 +32,10 @@ public partial class SaleView : ReactiveWindow<SaleViewModel>
                 d(ViewModel.NavigateToReceipt.RegisterHandler(async interaction =>
                 {
                     var receiptView = new ReceiptView(interaction.Input, _productService, _authService);
+                    if (Application.Current?.ApplicationLifetime is ClassicDesktopStyleApplicationLifetime desktop)
+                    {
+                        desktop.MainWindow = receiptView;
+                    }
                     receiptView.Show();
                     this.Close();
                     interaction.SetOutput(Unit.Default);

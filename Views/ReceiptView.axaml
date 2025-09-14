@@ -160,6 +160,7 @@
             <!-- New Sale Button -->
             <Button Content="New Sale" 
                     Command="{Binding NewSaleCommand}"
+                    IsEnabled="{Binding IsLoading, Converter={x:Static conv:BoolConverters.Not}}"
                     HorizontalAlignment="Stretch"
                     Height="40"
                     Margin="0,20,0,0"
@@ -171,6 +172,7 @@
             <!-- Loading Overlay -->
             <Border Background="#80000000"
                     IsVisible="{Binding IsLoading}"
+                    IsHitTestVisible="False"
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Stretch">
                 <Grid>
